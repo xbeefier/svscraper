@@ -104,7 +104,7 @@ def search(vp):
     root = html.parse(urlopen(search_url)).getroot()
     tab1 = root.find('.//div[@data-tabs-target="contents"]/div[@data-tab-value="1"]')
     weights = []
-    for div in tab1:
+    for i,div in enumerate(tab1):
         year = format_xpath_text(div.xpath(
             './/span[@class="ml-2 text-base font-semibold"]/text()'))
         if year != '(0)':
@@ -115,6 +115,7 @@ def search(vp):
             './/a[@class="font-semibold text-primary underline"][@href]'
             ).attrib['href']
         weights.append([0,href])
+        weights[-1][0] += 1/(i+1)
         weights[-1][0] += 1 if year == vp.year else 0
         weights[-1][0] += SequenceMatcher(None, company, vp.company).ratio()
     if not weights:
