@@ -33,9 +33,13 @@ Currently `svscraper.py` only scrapes one file at a time. A simple alternative
 is to use script shell commands to call it multiple times.
 Here is an example for Linux users using `find` to list all .webm movies in
 a directory and pass it to `xargs` to run the svscraper for each file found:
+
 ```
-find ./videos_dir -iname *.webm -printf '"%p"\n' | xargs -I{} python -u svscraper.py {}
+find ./videos_dir -iname *.webm -printf '"%p"\n' | xargs -I{} bash -c 'python -u svscraper.py "{}"; sleep 1;'
 ```
+
+Notice in the script above we respectfully sleep for 1s in between calls to
+avoid causing Internal Server Error (500) on our beloved skatevideosite.
 
 # TODO
 - Scrape skaters data.
